@@ -35,6 +35,7 @@
             <td>
                 <form id="delete_<?= $category['id'] ?>" action="./delete.php" method="post">
                     <input type="hidden" value="<?= $category['id'] ?>" name="id">
+                    <a class="btn btn-primary" href="./edit.php?id=<?=$category['id'] ?>">Edit</a>
                     <button type="button" class="btn btn-danger" onclick="confirmDelete(<?= $category['id'] ?>)">Delete</button>
                 </form>
             </td>
