@@ -1,51 +1,42 @@
 <?php
+
 $DB_TYPE = 'mysql';
 $DB_HOST = 'localhost';
-$DB_NAME = 'crud_test';
-$USER = 'root';
-$PW = '';
+$DB_NAME = 'crud';
+$DB_USER = 'root';
+$DB_PASS = '';
 
 try {
-    $connection = new PDO("$DB_TYPE:host=$DB_HOST;dbname=$DB_NAME", $USER, $PW);
-    $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $conn = new PDO("{$DB_TYPE}:host={$DB_HOST};dbname={$DB_NAME}", $DB_USER, $DB_PASS);
+    $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (Exception $e) {
-    die("Connection failed: " . $e->getMessage());
+    die('Connect error: ' . $e->getMessage());
 }
 
-function prepareSQL($sql) {
-    global $connection;
-    return $connection->prepare($sql);
+function prepareSQL($sql)
+{
+    global $conn;
+    return $conn->prepare($sql);
 }
 
-function all() {
+function getAll()
+{
     $sql = "SELECT * FROM categories";
     $stmt = prepareSQL($sql);
     $stmt->execute();
     return $stmt->fetchAll();
 }
 
-function create($data) {
+function create($data)
+{
     $sql = "INSERT INTO categories (name) VALUES (:name)";
     $stmt = prepareSQL($sql);
     $stmt->execute($data);
 }
 
-function update($data) {
-    $sql = "UPDATE categories SET name = :name WHERE id = :id";
+function delete($data)
+{
+    $sql = "DELETE FROM categories WHERE id=:id";
     $stmt = prepareSQL($sql);
     $stmt->execute($data);
 }
-
-function delete($data) {
-    $sql = "DELETE FROM categories where id = :id";
-    $stmt = prepareSQL($sql);
-    $stmt->execute($data);
-}
-
-function findById($data) {
-    $sql = "SELECT * FROM categories where id = :id";
-    $stmt = prepareSQL($sql);
-    $stmt->execute($data);
-    return $stmt->fetch();
-}
-

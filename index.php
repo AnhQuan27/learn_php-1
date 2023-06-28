@@ -1,6 +1,7 @@
 <?php
     require_once 'pdo.php';
-    $categories = all();
+
+    $categories = getAll();
 ?>
 
 <!doctype html>
@@ -16,10 +17,10 @@
     <title>Hello, world!</title>
 </head>
 <body>
-<div class="container mt-3">
-    <div class="container-fluid"><h3>List Category</h3></div>
-    <a class="btn btn-success" href="./create.php">Create</a>
-    <table class="table table-hover">
+<div class="container pt-4">
+    <h1>List category</h1>
+    <a href="./category/create.php" class="btn btn-success">Create</a>
+    <table class="table">
         <thead>
         <tr>
             <th scope="col">Id</th>
@@ -28,15 +29,14 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($categories as $category) : ?>
+        <?php foreach ($categories as $category): ?>
         <tr>
             <th scope="row"><?= $category['id'] ?></th>
             <td><?= $category['name'] ?></td>
             <td>
-                <form id="delete_<?= $category['id'] ?>" action="./delete.php" method="post">
+                <form id="category_<?= $category['id'] ?>" action="./category/delete.php" method="POST">
                     <input type="hidden" value="<?= $category['id'] ?>" name="id">
-                    <a class="btn btn-primary" href="./edit.php?id=<?=$category['id'] ?>">Edit</a>
-                    <button type="button" class="btn btn-danger" onclick="confirmDelete(<?= $category['id'] ?>)">Delete</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteCategory(<?= $category['id'] ?>)">Delete</button>
                 </form>
             </td>
         </tr>
@@ -45,15 +45,14 @@
     </table>
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script>
-    function confirmDelete(id) {
-        let result = confirm('Are you sure?');
-        if (result === true) {
-            document.getElementById(`delete_${id}`).submit();
+    function deleteCategory(id) {
+        if (confirm('Are you sure?')) {
+            document.getElementById(`category_${id}`).submit();
         }
     }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
